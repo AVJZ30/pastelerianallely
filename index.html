@@ -1,0 +1,1657 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pastelería Nallely - Menú Completo</title>
+    <!-- Importar Firebase -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
+        import { getFirestore, collection, addDoc, getDocs, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        // Tu configuración de Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyBaWIAxvyEnx9XrSsRu0jESTpuWsqd79hM",
+            authDomain: "pastelerianallely-afe49.firebaseapp.com",
+            projectId: "pastelerianallely-afe49",
+            storageBucket: "pastelerianallely-afe49.firebasestorage.app",
+            messagingSenderId: "239397711762",
+            appId: "1:239397711762:web:36e9051aeb495852f59b4b",
+            measurementId: "G-ZVWJF3LEVS"
+        };
+
+        // Inicializar Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const db = getFirestore(app);
+
+        // Hacer que db esté disponible globalmente
+        window.db = db;
+        window.addDoc = addDoc;
+        window.collection = collection;
+        window.getDocs = getDocs;
+        window.onSnapshot = onSnapshot;
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #000;
+            color: #FFD700;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Estilos para el efecto scroll */
+        .section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 5rem 2rem 2rem;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Encabezado y navegación */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            padding: 1rem 0;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(255, 215, 0, 0.2);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: #FFD700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+            letter-spacing: 1px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        nav ul li {
+            margin: 0.3rem 0.5rem;
+        }
+
+        nav ul li a {
+            color: #FFD700;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            font-size: 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            border: 1px solid transparent;
+        }
+
+        nav ul li a:hover {
+            color: #000;
+            background-color: #FFD700;
+            border-color: #FFD700;
+            text-shadow: none;
+        }
+
+        /* Sección de inicio */
+        #inicio {
+            background: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)), url('https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80');
+            background-size: cover;
+            background-position: center;
+            text-align: center;
+            padding-top: 8rem;
+        }
+
+        .main-title {
+            font-size: 4.5rem;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 25px rgba(255, 215, 0, 0.8);
+            letter-spacing: 3px;
+        }
+
+        .subtitle {
+            font-size: 1.8rem;
+            margin-bottom: 3rem;
+            max-width: 900px;
+            color: #FFED4E;
+        }
+
+        /* Secciones generales */
+        .section-title {
+            font-size: 3rem;
+            margin-bottom: 3rem;
+            text-align: center;
+            position: relative;
+            padding-bottom: 1rem;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 4px;
+            background-color: #FFD700;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+        }
+
+        .section-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            color: #FFED4E;
+            text-align: center;
+            width: 100%;
+        }
+
+        /* Categorías de productos */
+        .categorias-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            max-width: 1400px;
+            width: 100%;
+            margin-bottom: 3rem;
+        }
+
+        .categoria-card {
+            background-color: #1a1a1a;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s;
+            border: 2px solid #333;
+            height: 100%;
+        }
+
+        .categoria-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(255, 215, 0, 0.2);
+            border-color: #FFD700;
+        }
+
+        .categoria-header {
+            background-color: #FFD700;
+            color: #000;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .categoria-titulo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .categoria-body {
+            padding: 1.5rem;
+        }
+
+        .producto-lista {
+            list-style: none;
+        }
+
+        .producto-item {
+            padding: 0.8rem 0;
+            border-bottom: 1px solid #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .producto-item:last-child {
+            border-bottom: none;
+        }
+
+        .producto-nombre {
+            font-size: 1.2rem;
+            color: #FFED4E;
+        }
+
+        .producto-precio {
+            font-size: 1.3rem;
+            color: #FFD700;
+            font-weight: bold;
+        }
+
+        /* Sección comentarios */
+        #comentarios {
+            background-color: #111;
+            min-height: auto;
+            padding: 5rem 2rem;
+        }
+
+        .comentarios-container {
+            display: flex;
+            flex-direction: column;
+            max-width: 1000px;
+            width: 100%;
+        }
+
+        .form-container {
+            background-color: #1a1a1a;
+            padding: 2.5rem;
+            border-radius: 15px;
+            margin-bottom: 3rem;
+            border: 2px solid #333;
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.1);
+        }
+
+        .form-title {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: #FFD700;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #FFED4E;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 1rem;
+            background-color: #222;
+            border: 1px solid #555;
+            border-radius: 8px;
+            color: #FFD700;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #FFD700;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+
+        .btn {
+            background-color: #FFD700;
+            color: #000;
+            border: none;
+            padding: 1.2rem 2.5rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: block;
+            margin: 0 auto;
+            letter-spacing: 1px;
+        }
+
+        .btn:hover {
+            background-color: #ffed4e;
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+        }
+
+        .comentarios-list {
+            background-color: #1a1a1a;
+            padding: 2.5rem;
+            border-radius: 15px;
+            border: 2px solid #333;
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.1);
+        }
+
+        .comentarios-title {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: #FFD700;
+            text-align: center;
+        }
+
+        .comentario-item {
+            padding: 1.5rem;
+            border-bottom: 1px solid #333;
+            margin-bottom: 1rem;
+            background-color: #222;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+
+        .comentario-item:hover {
+            background-color: #252525;
+            border-color: #FFD700;
+        }
+
+        .comentario-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .comentario-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .comentario-nombre {
+            font-weight: bold;
+            font-size: 1.3rem;
+            color: #FFD700;
+        }
+
+        .comentario-fecha {
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .comentario-texto {
+            color: #ddd;
+            line-height: 1.6;
+            font-size: 1.1rem;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #000;
+            text-align: center;
+            padding: 2.5rem;
+            border-top: 2px solid #333;
+            margin-top: 2rem;
+            color: #FFED4E;
+        }
+
+        .footer-logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #FFD700;
+            margin-bottom: 1rem;
+        }
+
+        .footer-info {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Botón para volver arriba */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: #FFD700;
+            color: #000;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 100;
+            transition: all 0.3s;
+            box-shadow: 0 3px 10px rgba(255, 215, 0, 0.4);
+            border: none;
+        }
+
+        .back-to-top:hover {
+            background-color: #ffed4e;
+            transform: scale(1.1);
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .categorias-container {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+        }
+
+        @media (max-width: 992px) {
+            .nav-container {
+                flex-direction: column;
+                padding: 1rem;
+            }
+            
+            .logo {
+                margin-bottom: 1rem;
+                font-size: 2rem;
+            }
+            
+            nav ul {
+                justify-content: center;
+            }
+            
+            nav ul li {
+                margin: 0.3rem;
+            }
+            
+            nav ul li a {
+                font-size: 0.9rem;
+                padding: 0.4rem 0.8rem;
+            }
+            
+            .main-title {
+                font-size: 3.5rem;
+            }
+            
+            .section-title {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 2.8rem;
+            }
+            
+            .subtitle {
+                font-size: 1.4rem;
+            }
+            
+            .section {
+                padding: 4rem 1.5rem 1.5rem;
+            }
+            
+            .categorias-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .categoria-titulo {
+                font-size: 1.6rem;
+            }
+            
+            .form-container, .comentarios-list {
+                padding: 1.5rem;
+            }
+            
+            .back-to-top {
+                bottom: 20px;
+                right: 20px;
+                width: 45px;
+                height: 45px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-title {
+                font-size: 2.2rem;
+            }
+            
+            .subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .categoria-titulo {
+                font-size: 1.4rem;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            nav ul li {
+                margin: 0.2rem 0;
+                width: 100%;
+                text-align: center;
+            }
+            
+            nav ul li a {
+                display: block;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Encabezado con navegación -->
+    <header>
+        <div class="nav-container">
+            <div class="logo">Pastelería Nallely</div>
+            <nav>
+                <ul>
+                    <li><a href="#inicio">Inicio</a></li>
+                    <li><a href="#desayunos">Desayunos</a></li>
+                    <li><a href="#tortas-especiales">Tortas Especiales</a></li>
+                    <li><a href="#postres">Postres</a></li>
+                    <li><a href="#temporada">Temporada</a></li>
+                    <li><a href="#comentarios">Comentarios</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Sección de inicio -->
+    <section id="inicio" class="section">
+        <h1 class="main-title">Pastelería Nallely</h1>
+        <p class="subtitle">El sabor perfecto para cada ocasión. Más de 30 categorías de delicias hechas con amor y los mejores ingredientes.</p>
+        <a href="#desayunos" class="btn">Explorar Menú</a>
+    </section>
+
+    <!-- Sección de Desayunos -->
+    <section id="desayunos" class="section">
+        <h2 class="section-title">Desayunos y Bebidas</h2>
+        
+        <div class="categorias-container">
+            <!-- Desayunos -->
+            <div class="categoria-card">
+                <div class="categoria-header">
+                    <h3 class="categoria-titulo">Desayunos</h3>
+                </div>
+                <div class="categoria-body">
+                    <ul class="producto-lista">
+                        <li class="producto-item">
+                            <span class="producto-nombre">Desayuno Continental</span>
+                            <span class="producto-precio">$120</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Desayuno Ejecutivo</span>
+                            <span class="producto-precio">$180</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Desayuno Familiar</span>
+                            <span class="producto-precio">$350</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Bebidas Calientes -->
+            <div class="categoria-card">
+                <div class="categoria-header">
+                    <h3 class="categoria-titulo">Bebidas Calientes</h3>
+                </div>
+                <div class="categoria-body">
+                    <ul class="producto-lista">
+                        <li class="producto-item">
+                            <span class="producto-nombre">Café Americano</span>
+                            <span class="producto-precio">$25</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Capuchino</span>
+                            <span class="producto-precio">$35</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Chocolate Caliente</span>
+                            <span class="producto-precio">$30</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Té Variedades</span>
+                            <span class="producto-precio">$20</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Sandwiches -->
+            <div class="categoria-card">
+                <div class="categoria-header">
+                    <h3 class="categoria-titulo">Sandwiches</h3>
+                </div>
+                <div class="categoria-body">
+                    <ul class="producto-lista">
+                        <li class="producto-item">
+                            <span class="producto-nombre">Sandwich Club</span>
+                            <span class="producto-precio">$85</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Sandwich Vegetariano</span>
+                            <span class="producto-precio">$75</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Sandwich de Pollo</span>
+                            <span class="producto-precio">$90</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Bebidas Frías -->
+            <div class="categoria-card">
+                <div class="categoria-header">
+                    <h3 class="categoria-titulo">Bebidas Frías</h3>
+                </div>
+                <div class="categoria-body">
+                    <ul class="producto-lista">
+                        <li class="producto-item">
+                            <span class="producto-nombre">Jugos Naturales</span>
+                            <span class="producto-precio">$30</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Smoothies</span>
+                            <span class="producto-precio">$45</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Limonada</span>
+                            <span class="producto-precio">$25</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Refrescos</span>
+                            <span class="producto-precio">$20</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Tortas Especiales -->
+    <section id="tortas-especiales" class="section">
+        <h2 class="section-title">Tortas Especiales</h2>
+        
+        <div class="categorias-container">
+            <!-- Tortas Especiales -->
+            <div class="categoria-card">
+                <div class="categoria-header">
+                    <h3 class="categoria-titulo">Tortas Especiales</h3>
+                </div>
+                <div class="categoria-body">
+                    <ul class="producto-lista">
+                        <li class="producto-item">
+                            <span class="producto-nombre">Torta Especial Clásica</span>
+                            <span class="producto-precio">$450</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Torta Especial Premium</span>
+                            <span class="producto-precio">$650</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Cheesecake -->
+            <div class="categoria-card">
+                <div class="categoria-header">
+                    <h3 class="categoria-titulo">Cheesecake</h3>
+                </div>
+                <div class="categoria-body">
+                    <ul class="producto-lista">
+                        <li class="producto-item">
+                            <span class="producto-nombre">Cheesecake Clásico</span>
+                            <span class="producto-precio">$380</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Cheesecake de Fresa</span>
+                            <span class="producto-precio">$420</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Cheesecake de Chocolate</span>
+                            <span class="producto-precio">$400</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Bocaditos Gourmet -->
+            <div class="categoria-card">
+                <div class="categoria-header">
+                    <h3 class="categoria-titulo">Bocaditos Gourmet</h3>
+                </div>
+                <div class="categoria-body">
+                    <ul class="producto-lista">
+                        <li class="producto-item">
+                            <span class="producto-nombre">Bocaditos Dulces (12 und)</span>
+                            <span class="producto-precio">$180</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Bocaditos Salados (12 und)</span>
+                            <span class="producto-precio">$200</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Mix Gourmet (24 und)</span>
+                            <span class="producto-precio">$350</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Tortas Niñas -->
+    <section id="tortas-ninas" class="section">
+        <h2 class="section-title">Tortas para Niñas</h2>
+        
+        <div class="categorias-container">
+            <!-- Tortas Niñas -->
+            <div class="categoria-card">
+                <div class="categoria-header">
+                    <h3 class="categoria-titulo">Tortas Niñas</h3>
+                </div>
+                <div class="categoria-body">
+                    <ul class="producto-lista">
+                        <li class="producto-item">
+                            <span class="producto-nombre">Torta Princesa</span>
+                            <span class="producto-precio">$480</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Torta Unicornio</span>
+                            <span class="producto-precio">$520</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Torta Frozen</span>
+                            <span class="producto-precio">$500</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Cake Niñas 2 Pisos -->
+            <div class="categoria-card">
+                <div class="categoria-header">
+                    <h3 class="categoria-titulo">Cake Niñas 2 Pisos</h3>
+                </div>
+                <div class="categoria-body">
+                    <ul class="producto-lista">
+                        <li class="producto-item">
+                            <span class="producto-nombre">Cake 2 Pisos Princesa</span>
+                            <span class="producto-precio">$850</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Cake 2 Pisos Unicornio</span>
+                            <span class="producto-precio">$900</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Cake 2 Pisos Temático</span>
+                            <span class="producto-precio">$950</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Dripcake Niñas -->
+            <div class="categoria-card">
+                <div class="categoria-header">
+                    <h3 class="categoria-titulo">Dripcake Niñas</h3>
+                </div>
+                <div class="categoria-body">
+                    <ul class="producto-lista">
+                        <li class="producto-item">
+                            <span class="producto-nombre">Dripcake Colorido</span>
+                            <span class="producto-precio">$550</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Dripcake con Decoración</span>
+                            <span class="producto-precio">$600</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Dripcake Personalizado</span>
+                            <span class="producto-precio">$650</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Tortas Niños -->
+    <section id="tortas-ninos" class="section">
+        <h2 class="section-title">Tortas para Niños</h2>
+        
+        <div class="categorias-container">
+            <!-- Tortas Niños -->
+            <div class="categoria-card">
+                <div class="categoria-header">
+                    <h3 class="categoria-titulo">Tortas Niños</h3>
+                </div>
+                <div class="categoria-body">
+                    <ul class="producto-lista">
+                        <li class="producto-item">
+                            <span class="producto-nombre">Torta Superhéroes</span>
+                            <span class="producto-precio">$480</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Torta Carreras</span>
+                            <span class="producto-precio">$500</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Torta Animales</span>
+                            <span class="producto-precio">$460</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Cake Niños 2 Piso -->
+            <div class="categoria-card">
+                <div class="categoria-header">
+                    <h3 class="categoria-titulo">Cake Niños 2 Piso</h3>
+                </div>
+                <div class="categoria-body">
+                    <ul class="producto-lista">
+                        <li class="producto-item">
+                            <span class="producto-nombre">Cake 2 Pisos Deportivo</span>
+                            <span class="producto-precio">$850</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Cake 2 Pisos Aventura</span>
+                            <span class="producto-precio">$900</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Cake 2 Pisos Espacial</span>
+                            <span class="producto-precio">$950</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Dripcake Niños -->
+            <div class="categoria-card">
+                <div class="categoria-header">
+                    <h3 class="categoria-titulo">Dripcake Niños</h3>
+                </div>
+                <div class="categoria-body">
+                    <ul class="producto-lista">
+                        <li class="producto-item">
+                            <span class="producto-nombre">Dripcake Deportivo</span>
+                            <span class="producto-precio">$550</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Dripcake Temático</span>
+                            <span class="producto-precio">$600</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Dripcake Personalizado</span>
+                            <span class="producto-precio">$650</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Tortas Adultos -->
+    <section id="tortas-adultos" class="section">
+        <h2 class="section-title">Tortas para Adultos</h2>
+        
+        <div class="categorias-container">
+            <!-- Torta Mujer -->
+            <div class="categoria-card">
+                <div class="categoria-header">
+                    <h3 class="categoria-titulo">Torta Mujer</h3>
+                </div>
+                <div class="categoria-body">
+                    <ul class="producto-lista">
+                        <li class="producto-item">
+                            <span class="producto-nombre">Torta Elegante</span>
+                            <span class="producto-precio">$580</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Torta de Flores</span>
+                            <span class="producto-precio">$620</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Torta Glamour</span>
+                            <span class="producto-precio">$650</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Torta de Hombres -->
+            <div class="categoria-card">
+                <div class="categoria-header">
+                    <h3 class="categoria-titulo">Torta de Hombres</h3>
+                </div>
+                <div class="categoria-body">
+                    <ul class="producto-lista">
+                        <li class="producto-item">
+                            <span class="producto-nombre">Torta Ejecutiva</span>
+                            <span class="producto-precio">$580</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Torta Deportiva</span>
+                            <span class="producto-precio">$600</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Torta Elegante</span>
+                            <span class="producto-precio">$620</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Torta Fútbol -->
+            <div class="categoria-card">
+                <div class="categoria-header">
+                    <h3 class="categoria-titulo">Torta Fútbol</h3>
+                </div>
+                <div class="categoria-body">
+                    <ul class="producto-lista">
+                        <li class="producto-item">
+                            <span class="producto-nombre">Torta Balón</span>
+                            <span class="producto-precio">$650</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Torta Cancha</span>
+                            <span class="producto-precio">$700</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Torta Equipo</span>
+                            <span class="producto-precio">$750</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Torta Profesionales -->
+            <div class="categoria-card">
+                <div class="categoria-header">
+                    <h3 class="categoria-titulo">Torta Profesionales</h3>
+                </div>
+                <div class="categoria-body">
+                    <ul class="producto-lista">
+                        <li class="producto-item">
+                            <span class="producto-nombre">Torta Médica</span>
+                            <span class="producto-precio">$680</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Torta Ingeniería</span>
+                            <span class="producto-precio">$680</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Torta Abogacía</span>
+                            <span class="producto-precio">$680</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Tortas 15 Años -->
+    <section id="tortas-15-anos" class="section">
+        <h2 class="section-title">Tortas para 15 Años</h2>
+        
+        <div class="categorias-container">
+            <!-- Torta 15 Años Mujer -->
+            <div class="categoria-card">
+                <div class="categoria-header">
+                    <h3 class="categoria-titulo">Tortas 15 Años Mujer</h3>
+                </div>
+                <div class="categoria-body">
+                    <ul class="producto-lista">
+                        <li class="producto-item">
+                            <span class="producto-nombre">Torta Princesa XV</span>
+                            <span class="producto-precio">$950</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Torta Elegante XV</span>
+                            <span class="producto-precio">$1,200</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Torta Lujosa XV</span>
+                            <span class="producto-precio">$1,500</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Torta 15 Años Hombre -->
+            <div class="categoria-card">
+                <div class="categoria-header">
+                    <h3 class="categoria-titulo">Tortas 15 Años Hombre</h3>
+                </div>
+                <div class="categoria-body">
+                    <ul class="producto-lista">
+                        <li class="producto-item">
+                            <span class="producto-nombre">Torta Formal XV</span>
+                            <span class="producto-precio">$900</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Torta Deportiva XV</span>
+                            <span class="producto-precio">$1,100</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Torta Temática XV</span>
+                            <span class="producto-precio">$1,300</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Torta Sacramentos -->
+            <div class="categoria-card">
+                <div class="categoria-header">
+                    <h3 class="categoria-titulo">Torta Sacramentos</h3>
+                </div>
+                <div class="categoria-body">
+                    <ul class="producto-lista">
+                        <li class="producto-item">
+                            <span class="producto-nombre">Torta Bautizo</span>
+                            <span class="producto-precio">$550</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Torta Primera Comunión</span>
+                            <span class="producto-precio">$600</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Torta Confirmación</span>
+                            <span class="producto-precio">$650</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Eventos Especiales -->
+    <section id="eventos-especiales" class="section">
+        <h2 class="section-title">Eventos Especiales</h2>
+        
+        <div class="categorias-container">
+            <!-- Baby Shower -->
+            <div class="categoria-card">
+                <div class="categoria-header">
+                    <h3 class="categoria-titulo">Baby Shower y Revelación</h3>
+                </div>
+                <div class="categoria-body">
+                    <ul class="producto-lista">
+                        <li class="producto-item">
+                            <span class="producto-nombre">Torta Baby Shower</span>
+                            <span class="producto-precio">$600</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Torta Revelación</span>
+                            <span class="producto-precio">$650</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Cupcakes Baby</span>
+                            <span class="producto-precio">$350</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Graduación -->
+            <div class="categoria-card">
+                <div class="categoria-header">
+                    <h3 class="categoria-titulo">Graduación</h3>
+                </div>
+                <div class="categoria-body">
+                    <ul class="producto-lista">
+                        <li class="producto-item">
+                            <span class="producto-nombre">Torta Graduación</span>
+                            <span class="producto-precio">$650</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Torta Toque y Birrete</span>
+                            <span class="producto-precio">$700</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Torta Diploma</span>
+                            <span class="producto-precio">$680</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Despedida de Soltero -->
+            <div class="categoria-card">
+                <div class="categoria-header">
+                    <h3 class="categoria-titulo">Despedida de Soltero</h3>
+                </div>
+                <div class="categoria-body">
+                    <ul class="producto-lista">
+                        <li class="producto-item">
+                            <span class="producto-nombre">Torta Temática</span>
+                            <span class="producto-precio">$600</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Torta Personalizada</span>
+                            <span class="producto-precio">$750</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Torta con Foto</span>
+                            <span class="producto-precio">$800</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Fechas Especiales -->
+    <section id="fechas-especiales" class="section">
+        <h2 class="section-title">Fechas Especiales</h2>
+        
+        <div class="categorias-container">
+            <!-- San Valentín -->
+            <div class="categoria-card">
+                <div class="categoria-header">
+                    <h3 class="categoria-titulo">San Valentín</h3>
+                </div>
+                <div class="categoria-body">
+                    <ul class="producto-lista">
+                        <li class="producto-item">
+                            <span class="producto-nombre">Torta Corazón</span>
+                            <span class="producto-precio">$500</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Torta Romántica</span>
+                            <span class="producto-precio">$550</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Cupcakes Amor</span>
+                            <span class="producto-precio">$300</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Día de las Madres -->
+            <div class="categoria-card">
+                <div class="categoria-header">
+                    <h3 class="categoria-titulo">Día de las Madres</h3>
+                </div>
+                <div class="categoria-body">
+                    <ul class="producto-lista">
+                        <li class="producto-item">
+                            <span class="producto-nombre">Torta para Mamá</span>
+                            <span class="producto-precio">$580</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Torta con Flores</span>
+                            <span class="producto-precio">$620</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Torta Corazón Mamá</span>
+                            <span class="producto-precio">$650</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Día del Niño -->
+            <div class="categoria-card">
+                <div class="categoria-header">
+                    <h3 class="categoria-titulo">Día del Niño</h3>
+                </div>
+                <div class="categoria-body">
+                    <ul class="producto-lista">
+                        <li class="producto-item">
+                            <span class="producto-nombre">Torta Infantil</span>
+                            <span class="producto-precio">$550</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Torta de Personajes</span>
+                            <span class="producto-precio">$600</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Torta Colorida</span>
+                            <span class="producto-precio">$580</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Día del Padre -->
+            <div class="categoria-card">
+                <div class="categoria-header">
+                    <h3 class="categoria-titulo">Día del Padre</h3>
+                </div>
+                <div class="categoria-body">
+                    <ul class="producto-lista">
+                        <li class="producto-item">
+                            <span class="producto-nombre">Torta para Papá</span>
+                            <span class="producto-precio">$580</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Torta Herramientas</span>
+                            <span class="producto-precio">$620</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Torta Deportiva Papá</span>
+                            <span class="producto-precio">$650</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Temporada -->
+    <section id="temporada" class="section">
+        <h2 class="section-title">Productos de Temporada</h2>
+        
+        <div class="categorias-container">
+            <!-- Ecuador y Guayaquileñas -->
+            <div class="categoria-card">
+                <div class="categoria-header">
+                    <h3 class="categoria-titulo">Ecuador y Guayaquileñas</h3>
+                </div>
+                <div class="categoria-body">
+                    <ul class="producto-lista">
+                        <li class="producto-item">
+                            <span class="producto-nombre">Torta Ecuatoriana</span>
+                            <span class="producto-precio">$580</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Postres Típicos</span>
+                            <span class="producto-precio">$320</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Dulces Tradicionales</span>
+                            <span class="producto-precio">$280</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Acción de Gracias -->
+            <div class="categoria-card">
+                <div class="categoria-header">
+                    <h3 class="categoria-titulo">Acción de Gracias</h3>
+                </div>
+                <div class="categoria-body">
+                    <ul class="producto-lista">
+                        <li class="producto-item">
+                            <span class="producto-nombre">Torta de Calabaza</span>
+                            <span class="producto-precio">$550</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Pie de Manzana</span>
+                            <span class="producto-precio">$480</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Postres Otoñales</span>
+                            <span class="producto-precio">$350</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Halloween -->
+            <div class="categoria-card">
+                <div class="categoria-header">
+                    <h3 class="categoria-titulo">Halloween</h3>
+                </div>
+                <div class="categoria-body">
+                    <ul class="producto-lista">
+                        <li class="producto-item">
+                            <span class="producto-nombre">Torta Terrorífica</span>
+                            <span class="producto-precio">$600</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Cupcakes Halloween</span>
+                            <span class="producto-precio">$350</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Galletas Decoradas</span>
+                            <span class="producto-precio">$280</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Torta y Huevos de Pascua -->
+            <div class="categoria-card">
+                <div class="categoria-header">
+                    <h3 class="categoria-titulo">Torta y Huevos de Pascua</h3>
+                </div>
+                <div class="categoria-body">
+                    <ul class="producto-lista">
+                        <li class="producto-item">
+                            <span class="producto-nombre">Torta de Pascua</span>
+                            <span class="producto-precio">$580</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Huevos de Chocolate</span>
+                            <span class="producto-precio">$150</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Conejos de Pascua</span>
+                            <span class="producto-precio">$180</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Colada Morada y Guaguas -->
+            <div class="categoria-card">
+                <div class="categoria-header">
+                    <h3 class="categoria-titulo">Colada Morada y Guaguas</h3>
+                </div>
+                <div class="categoria-body">
+                    <ul class="producto-lista">
+                        <li class="producto-item">
+                            <span class="producto-nombre">Colada Morada</span>
+                            <span class="producto-precio">$120</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Guaguas de Pan</span>
+                            <span class="producto-precio">$80</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Combo Tradicional</span>
+                            <span class="producto-precio">$180</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Pan de Muerto -->
+            <div class="categoria-card">
+                <div class="categoria-header">
+                    <h3 class="categoria-titulo">Pan de Muerto</h3>
+                </div>
+                <div class="categoria-body">
+                    <ul class="producto-lista">
+                        <li class="producto-item">
+                            <span class="producto-nombre">Pan de Muerto Tradicional</span>
+                            <span class="producto-precio">$90</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Pan de Muerto Relleno</span>
+                            <span class="producto-precio">$120</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Pan de Muerto Mini</span>
+                            <span class="producto-precio">$60</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Pan de Pascua -->
+            <div class="categoria-card">
+                <div class="categoria-header">
+                    <h3 class="categoria-titulo">Pan de Pascua</h3>
+                </div>
+                <div class="categoria-body">
+                    <ul class="producto-lista">
+                        <li class="producto-item">
+                            <span class="producto-nombre">Pan de Pascua Clásico</span>
+                            <span class="producto-precio">$100</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Pan de Pascua con Frutas</span>
+                            <span class="producto-precio">$130</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Pan de Pascua Mini</span>
+                            <span class="producto-precio">$70</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Navidad y Fin de Año -->
+            <div class="categoria-card">
+                <div class="categoria-header">
+                    <h3 class="categoria-titulo">Navidad y Fin de Año</h3>
+                </div>
+                <div class="categoria-body">
+                    <ul class="producto-lista">
+                        <li class="producto-item">
+                            <span class="producto-nombre">Torta Navideña</span>
+                            <span class="producto-precio">$650</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Galletas de Navidad</span>
+                            <span class="producto-precio">$300</span>
+                        </li>
+                        <li class="producto-item">
+                            <span class="producto-nombre">Postres Fin de Año</span>
+                            <span class="producto-precio">$400</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de comentarios -->
+    <section id="comentarios" class="section">
+        <h2 class="section-title">Comentarios y Opiniones</h2>
+        <div class="comentarios-container">
+            <div class="form-container">
+                <h3 class="form-title">Deja tu comentario</h3>
+                <form id="comentarioForm">
+                    <div class="form-group">
+                        <label for="nombre">Nombre:</label>
+                        <input type="text" id="nombre" name="nombre" required placeholder="Tu nombre">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Correo electrónico:</label>
+                        <input type="email" id="email" name="email" required placeholder="tu@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="comentario">Tu comentario:</label>
+                        <textarea id="comentario" name="comentario" rows="5" required placeholder="Escribe tu opinión sobre nuestros productos..."></textarea>
+                    </div>
+                    <button type="submit" class="btn">Enviar Comentario</button>
+                </form>
+            </div>
+            
+            <div class="comentarios-list">
+                <h3 class="comentarios-title">Comentarios de nuestros clientes</h3>
+                <div id="listaComentarios">
+                    <!-- Los comentarios se cargarán aquí desde Firebase -->
+                    <p class="cargando">Cargando comentarios...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-logo">Pastelería Nallely</div>
+        <p class="footer-info">El sabor perfecto para cada ocasión</p>
+        <p class="footer-info">Dirección: Calle Dulce 123, Ciudad de México | Tel: 55-1234-5678</p>
+        <p class="footer-info">Horario: Lunes a Domingo 8:00 AM - 9:00 PM</p>
+        <p>© 2023 Pastelería Nallely. Todos los derechos reservados.</p>
+    </footer>
+
+    <!-- Botón para volver arriba -->
+    <button class="back-to-top" id="backToTop">↑</button>
+
+    <script>
+        // Efecto scroll de aparición
+        document.addEventListener('DOMContentLoaded', function() {
+            const sections = document.querySelectorAll('.section');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+            
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+            
+            // Cargar comentarios desde Firebase
+            cargarComentarios();
+            
+            // Manejar el envío del formulario
+            document.getElementById('comentarioForm').addEventListener('submit', enviarComentario);
+            
+            // Botón para volver arriba
+            const backToTopBtn = document.getElementById('backToTop');
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+            
+            // Mostrar/ocultar botón al hacer scroll
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    backToTopBtn.style.display = 'flex';
+                } else {
+                    backToTopBtn.style.display = 'none';
+                }
+            });
+            
+            // Navegación suave
+            document.querySelectorAll('nav a').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetSection = document.querySelector(targetId);
+                    
+                    if (targetSection) {
+                        window.scrollTo({
+                            top: targetSection.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+        
+        // Función para enviar comentario a Firebase
+        async function enviarComentario(e) {
+            e.preventDefault();
+            
+            const nombre = document.getElementById('nombre').value;
+            const email = document.getElementById('email').value;
+            const comentario = document.getElementById('comentario').value;
+            
+            // Validar campos
+            if (!nombre || !email || !comentario) {
+                alert('Por favor completa todos los campos');
+                return;
+            }
+            
+            // Crear objeto con los datos del comentario
+            const nuevoComentario = {
+                nombre: nombre,
+                email: email,
+                comentario: comentario,
+                fecha: new Date().toISOString()
+            };
+            
+            try {
+                // Guardar en Firebase
+                await addDoc(collection(window.db, "comentarios"), nuevoComentario);
+                
+                // Limpiar formulario
+                document.getElementById('comentarioForm').reset();
+                
+                // Mostrar mensaje de éxito
+                alert('¡Gracias por tu comentario! Tu opinión es muy importante para nosotros.');
+                
+            } catch (error) {
+                console.error("Error al guardar el comentario: ", error);
+                alert('Hubo un error al enviar tu comentario. Por favor intenta nuevamente.');
+            }
+        }
+        
+        // Función para cargar comentarios desde Firebase
+        async function cargarComentarios() {
+            const listaComentarios = document.getElementById('listaComentarios');
+            
+            try {
+                // Obtener comentarios de Firebase
+                const querySnapshot = await getDocs(collection(window.db, "comentarios"));
+                
+                // Limpiar lista actual
+                listaComentarios.innerHTML = '';
+                
+                if (querySnapshot.empty) {
+                    listaComentarios.innerHTML = '<p>No hay comentarios aún. ¡Sé el primero en comentar!</p>';
+                    return;
+                }
+                
+                // Ordenar comentarios por fecha (más recientes primero)
+                const comentarios = [];
+                querySnapshot.forEach((doc) => {
+                    comentarios.push({ id: doc.id, ...doc.data() });
+                });
+                
+                comentarios.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+                
+                // Mostrar comentarios (máximo 10)
+                const maxComentarios = Math.min(comentarios.length, 10);
+                
+                for (let i = 0; i < maxComentarios; i++) {
+                    const comentario = comentarios[i];
+                    const fecha = new Date(comentario.fecha);
+                    const fechaFormateada = fecha.toLocaleDateString('es-MX', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+                    
+                    const comentarioHTML = `
+                        <div class="comentario-item">
+                            <div class="comentario-header">
+                                <span class="comentario-nombre">${comentario.nombre}</span>
+                                <span class="comentario-fecha">${fechaFormateada}</span>
+                            </div>
+                            <p class="comentario-texto">${comentario.comentario}</p>
+                        </div>
+                    `;
+                    
+                    listaComentarios.innerHTML += comentarioHTML;
+                }
+                
+                // Mostrar mensaje si hay más comentarios
+                if (comentarios.length > 10) {
+                    listaComentarios.innerHTML += `<p style="text-align: center; color: #FFED4E; margin-top: 1rem;">Y ${comentarios.length - 10} comentarios más...</p>`;
+                }
+                
+            } catch (error) {
+                console.error("Error al cargar comentarios: ", error);
+                listaComentarios.innerHTML = '<p>Error al cargar los comentarios. Por favor intenta más tarde.</p>';
+            }
+        }
+        
+        // Escuchar cambios en tiempo real en los comentarios
+        window.onload = function() {
+            // Configurar listener en tiempo real para nuevos comentarios
+            try {
+                onSnapshot(collection(window.db, "comentarios"), (snapshot) => {
+                    // Si hay cambios, recargar comentarios
+                    cargarComentarios();
+                });
+            } catch (error) {
+                console.error("Error al configurar listener en tiempo real: ", error);
+            }
+        };
+    </script>
+</body>
+</html>
